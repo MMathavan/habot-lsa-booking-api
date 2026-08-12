@@ -76,6 +76,11 @@ class LSASearchAPIView(APIView):
             queryset = queryset.exclude(
                 booking_requests__start_time__lt=end_time,
                 booking_requests__end_time__gt=start_time,
+                booking_requests__status__in=[
+                    BookingRequest.BookingStatus.PENDING_PAYMENT,
+                    BookingRequest.BookingStatus.CONFIRMED,
+                    BookingRequest.BookingStatus.COMPLETED,
+                ],
             ).distinct()
 
         serializer = LSAProfileSerializer(queryset, many=True)
